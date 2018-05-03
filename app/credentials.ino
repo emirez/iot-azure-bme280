@@ -13,36 +13,30 @@ void readCredentials()
     connectionString = (char *)malloc(CONNECTION_STRING_LEN);
 
     // try to read out the credential information, if failed, the length should be 0.
-    int ssidLength = EEPROMread(ssidAddr, ssid);
-    int passLength = EEPROMread(passAddr, pass);
-    int connectionStringLength = EEPROMread(connectionStringAddr, connectionString);
-
+    // int ssidLength = EEPROMread(ssidAddr, ssid);
+    // int passLength = EEPROMread(passAddr, pass);
+    // int connectionStringLength = EEPROMread(connectionStringAddr, connectionString);
+    int ssidLength = 0;
+    int passLength = 0;
+    int connectionStringLength = 0;
+    
     if (ssidLength > 0 && passLength > 0 && connectionStringLength > 0 && !needEraseEEPROM())
     {
         return;
     }
 
-    // read from Serial and save to EEPROM
-    readFromSerial("Input your Wi-Fi SSID: ", ssid, SSID_LEN, 0);
+    ssid = "belkin.36ef";
     EEPROMWrite(ssidAddr, ssid, strlen(ssid));
-
-    readFromSerial("Input your Wi-Fi password: ", pass, PASS_LEN, 0);
+    pass = "34e966fb";
     EEPROMWrite(passAddr, pass, strlen(pass));
-
-    readFromSerial("Input your Azure IoT hub device connection string: ", connectionString, CONNECTION_STRING_LEN, 0);
+    connectionString = "HostName=TFHub.azure-devices.net;DeviceId=TFNode;SharedAccessKey=aOfwZ2dkf1wL05e/bZqagSZINRF48FhNg29WNdlkkxM=";
     EEPROMWrite(connectionStringAddr, connectionString, strlen(connectionString));
 }
 
 bool needEraseEEPROM()
 {
-    char result = 'n';
-    readFromSerial("Do you need re-input your credential information?(Auto skip this after 5 seconds)[Y/n]", &result, 1, 5000);
-    if (result == 'Y' || result == 'y')
-    {
         clearParam();
         return true;
-    }
-    return false;
 }
 
 // reset the EEPROM

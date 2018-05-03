@@ -1,6 +1,8 @@
 #include <Adafruit_Sensor.h>
 #include <ArduinoJson.h>
 #include <DHT.h>
+#include <Wire.h>
+#include "Seeed_BME280.h"
 
 #if SIMULATED_DATA
 
@@ -41,8 +43,8 @@ float readHumidity()
 
 bool readMessage(int messageId, char *payload)
 {
-    float temperature = readTemperature();
-    float humidity = readHumidity();
+    float temperature = bme280.getTemperature();
+    float humidity = bme280.getHumidity();
     StaticJsonBuffer<MESSAGE_MAX_LEN> jsonBuffer;
     JsonObject &root = jsonBuffer.createObject();
     root["deviceId"] = DEVICE_ID;

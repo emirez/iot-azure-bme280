@@ -6,12 +6,17 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 #include <WiFiUdp.h>
+#include <Wire.h>
 
 #include <AzureIoTHub.h>
 #include <AzureIoTProtocol_MQTT.h>
 #include <AzureIoTUtility.h>
 
 #include "config.h"
+#include "Seeed_BME280.h"
+
+
+BME280 bme280;
 
 static bool messagePending = false;
 static bool messageSending = true;
@@ -24,9 +29,9 @@ static int interval = INTERVAL;
 
 void blinkLED()
 {
-    digitalWrite(LED_PIN, HIGH);
+    digitalWrite(BUILTIN_LED, HIGH);
     delay(500);
-    digitalWrite(LED_PIN, LOW);
+    digitalWrite(BUILTIN_LED, LOW);
 }
 
 void initWifi()
@@ -86,6 +91,10 @@ void setup()
     initTime();
     initSensor();
 
+    if(!bme280.init()){
+      Serial.println("BME280 Device Error!");
+    }
+ 
     /*
      * AzureIotHub library remove AzureIoTHubClient class in 1.0.34, so we remove the code below to avoid
      *    compile error

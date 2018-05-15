@@ -25,9 +25,9 @@ void readCredentials()
         return;
     }
 
-    ssid = "belkin.36ef";
+    ssid = "Eren's iPhone";
     EEPROMWrite(ssidAddr, ssid, strlen(ssid));
-    pass = "34e966fb";
+    pass = "27081992";
     EEPROMWrite(passAddr, pass, strlen(pass));
     connectionString = "HostName=TFHub.azure-devices.net;DeviceId=TFNode;SharedAccessKey=aOfwZ2dkf1wL05e/bZqagSZINRF48FhNg29WNdlkkxM=";
     EEPROMWrite(connectionStringAddr, connectionString, strlen(connectionString));
